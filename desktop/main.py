@@ -36,6 +36,7 @@ import bleak
 import time
 from generated import ble_messages_pb2
 
+
 def print_control_keys():
     print("Command keys are:")
     print("y to turn on LED")
@@ -50,7 +51,6 @@ def process_cmd_input():
     get_sensor = False
     quit = False
     msg = ble_messages_pb2.Command()
-    #msg.value = 1
 
     char = input("Next command: ")
     if "y" == char:
@@ -62,7 +62,6 @@ def process_cmd_input():
     elif "g" == char:
         get_sensor = True
     elif "Q" == char:
-        #msg.button = ble_messages_pb2.Command.Stop
         # Stop the loop
         quit = True
     else:
@@ -81,6 +80,7 @@ def process_cmd_input():
 address = "02:80:E1:00:34:12"
 SENSOR_CHAR_UUID =   "340a1b80-cf4b-11e1-ac36-0002a5d5c51b"
 COMMAND_CHAR_UUID = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b"
+
 
 async def run(loop):    
     connect_attempts = 0
@@ -110,7 +110,6 @@ async def run(loop):
                         # Next send the actual data
                         b.extend(command_str)                     
                         await client.write_gatt_char(COMMAND_CHAR_UUID, b)
-                      
                     
                     if get_sensor:
                         # Await a reply.
@@ -147,11 +146,7 @@ async def run(loop):
             connect_attempts = connect_attempts+1
             
 
-
-
 if __name__ == "__main__":
     
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run(loop))
-
-
