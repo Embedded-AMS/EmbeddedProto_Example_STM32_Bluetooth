@@ -29,6 +29,8 @@
  */
 
 #include "BLEReadBuffer.h"
+#include <algorithm>
+#include <string.h>
 
 BLEReadBuffer::BLEReadBuffer()
   : data_{0},
@@ -92,6 +94,7 @@ void BLEReadBuffer::clear()
 {
   read_index_ = 0;
   write_index_ = 0;
+  memset(data_, 0, MAX_SIZE);
 }
 
 bool BLEReadBuffer::push(uint8_t& byte)
@@ -102,6 +105,16 @@ bool BLEReadBuffer::push(uint8_t& byte)
     data_[write_index_] = byte;
     ++write_index_;
   }
+  return return_value;
+}
+
+bool BLEReadBuffer::set(const uint8_t* data, const uint32_t length)
+{
+  const bool return_value = get_max_size() >= length;
+  const uint32_t copy_n_bytes = std::min(length, get_max_size());
+  clear();
+  memcpy(data_, data, copy_n_bytes);
+  write_index_ = copy_n_bytes;
   return return_value;
 }
 

@@ -53,34 +53,33 @@ Sensor sensor;
  * \param[in] byte Protobuf serialized command .
  * \param[in] data_length Length of BLE message characteristic.
  */
-void ble_receive_command(uint8_t *byte, uint8_t data_length){
-	//Protobuf message length is stored in first byte
-	uint8_t n_bytes = byte[0]+1;
+void ble_receive_command(uint8_t *byte, uint8_t data_length) {
 
-	if(n_bytes < data_length){
+  // The data received is framed. The first byte represents the
+  // number of bytes in the protobuf message. Lets obtain this length.
+  uint8_t n_bytes = byte[0] + 1;
 
-		for(uint8_t i=1; i<n_bytes; i++){
-			read_buffer.push(byte[i]);
-		}
+  if(n_bytes < data_length){
 
-		// Deserialize the data received.
+    // Copy the data except the length to the deserialization buffer.
+    read_buffer.set(byte + 1, n_bytes);
+
+    // Deserialize the data received.
 		auto deserialize_status = received_command.deserialize(read_buffer);
-		if(::EmbeddedProto::Error::NO_ERRORS == deserialize_status) {
-			// Process the command.
-			process_command(received_command);
-		}
-	}
+    if(::EmbeddedProto::Error::NO_ERRORS == deserialize_status) {
+      // Process the command.
+      process_command(received_command);
+    }
+  }
 }
 
-//! Function sends serialized protobuf reply message.
-/*!
- */
+//! The function which sends a serialized protobuf reply message.
 void ble_send_sensor(void)
 {
 	uint32_t message_len_index = write_buffer.get_size();
 	write_buffer.push(0); //placeholder for buffer length
 
-	//Update the sensor value
+	// Update the sensor value
 	uint32_t val = rand()%100;
 	sensor.set_light_sensor(val);
 
@@ -92,9 +91,9 @@ void ble_send_sensor(void)
 		Sensor_Update(write_buffer.get_data(), write_buffer.get_size());
 	}
 
-	  // Clear the buffers after we are done.
-	  read_buffer.clear();
-	  write_buffer.clear();
+	// Clear the buffers after we are done.
+	read_buffer.clear();
+	write_buffer.clear();
 }
 
 //! The functions takes a command and responds to it.

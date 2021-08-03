@@ -34,6 +34,7 @@
 #include <cstdint>
 #include <ReadBufferInterface.h>
 
+
 class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
 {
     //! Store a maximum of MAX_SIZE bytes in the buffer
@@ -72,6 +73,17 @@ class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
 
     //! Push new data into the buffer.
     bool push(uint8_t& byte);
+
+    //! Add a given number of bytes to the buffer.
+    /*!
+     * This function will overwrite items in the buffer. The function will copy no more than the
+     * size of the buffer allows.
+     * \param data A pointer to the data to be copied to the buffer.
+     * \param length The number of bytes in the source array.
+     * \return True when all data from the data pointer was copied. False if the copy was limited.
+     */
+    bool set(const uint8_t* data, const uint32_t length);
+
 
   private:
 
