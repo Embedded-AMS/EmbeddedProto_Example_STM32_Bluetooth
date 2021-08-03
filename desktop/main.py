@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2020 Embedded AMS B.V. - All Rights Reserved
+# Copyright (C) 2021 Embedded AMS B.V. - All Rights Reserved
 #
 # This file is part of Embedded Proto.
 #
@@ -27,6 +27,16 @@
 #   1066 VH, Amsterdam
 #   the Netherlands
 #
+
+
+###############################################
+# FILL IN THE SENSOR ADDRESS OF YOUR BLE CHIP #
+###############################################
+address = "02:80:E1:00:34:12"
+
+# The id's characteristics defined in the GATT service
+SENSOR_CHAR_UUID = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b"
+COMMAND_CHAR_UUID = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b"
 
 import sys
 import asyncio
@@ -76,11 +86,6 @@ def process_cmd_input():
         return None, None, quit
 
 
-address = "02:80:E1:00:34:12"
-SENSOR_CHAR_UUID =   "340a1b80-cf4b-11e1-ac36-0002a5d5c51b"
-COMMAND_CHAR_UUID = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b"
-
-
 async def run(loop):    
     connect_attempts = 0
     while True:
@@ -103,37 +108,39 @@ async def run(loop):
 
                         # Serialize the command message and send it over BLE.
                         command_str = command.SerializeToString()
-                        # First send the length of the message.
+                        
+                        # Next frame the data with the data length infront of 
+                        # the serialized data.
                         l = len(command_str)
                         b.extend(l.to_bytes(1, byteorder='little'))
-                        # Next send the actual data
-                        b.extend(command_str)                     
+                        b.extend(command_str)
+                        
+                        # Next send the actual data                 
                         await client.write_gatt_char(COMMAND_CHAR_UUID, b)
                     
                     if get_sensor:
                         # Await a reply.
                         bytes = await client.read_gatt_char(SENSOR_CHAR_UUID)
-                        
-                        #Print received protobuf message
-                        #print(bytes)
-                        
+                         
+                        # The data is framed the first byte contains the number
+                        # of bytes in the protobuf serialized data.
                         length = bytes[0]
+                       
                         if 0 < length:
                   
+                            # Strip the length from the bytes array
                             bytes = bytes[1:length+1]
 
                             # Check if we have received all bytes.
                             if length == len(bytes):
+                            
+                                # Create a new protobuf message object and 
+                                # deserialze the received data.
                                 sensor = ble_messages_pb2.Sensor()
                                 sensor.ParseFromString(bytes)
                                 
+                                # And do something with the sensor value received.
                                 print(str(sensor.light_sensor))
-                                # Do something with the reply.
-                                #if sensor.light_sensor:
-                                #   print("We have a winner!")
-                                #else:
-                                #    print("x pos: " + str(reply.x_pos))
-                                #    print("y pos: " + str(reply.y_pos))
                             
                     time.sleep(0.5)
         
