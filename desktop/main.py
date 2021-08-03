@@ -31,7 +31,6 @@
 import sys
 import asyncio
 from bleak import BleakClient
-from bleak import discover
 import bleak
 import time
 from generated import ble_messages_pb2
