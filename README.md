@@ -5,20 +5,16 @@
 Copyrights 2020 Embedded AMS B.V. Amsterdam, [www.EmbeddedAMS.nl](https://www.EmbeddedAMS.nl), [info@EmbeddedAMS.nl](mailto:info@EmbeddedAMS.nl)
 
 
-Looking for a more elaborate description of this example? Please visit: ble example link
+Looking for a more elaborate description of this example? Please visit: https://embeddedproto.com/ble-example-with-embedded-proto/
 
 
 # Introduction
 
 This repository hosts example code for Embedded Proto, the embedded implementation of Google Protocol Buffers. It is a simple example showing how a microcontroller and desktop pc can communicate using Bluetooth Low Energy (BLE). Command messages are send from a desktop script to the MCU using BLE. 
 
-![alt text](https://embeddedproto.com/wp-content/uploads/2020/05/PC_to_MCU_over_UART.png "PC to MCU over UART")
+![alt text](https://embeddedproto.com/wp-content/uploads/2020/05/PC_to_MCU_over_UART.png "PC to MCU over BLE")
 
-This example uses BLE to control a led on the NUCLEO board and also retrieve a sensor value.
-
-<!--![alt text](https://embeddedproto.com/wp-content/uploads/2020/05/fun_fair_game__pxfuel.jpg "Fun Fair Game")-->
-
-This example makes use of a NUCLEO-F446RE and a X-NUCLEO-IDB05A1 bluetooth evaluation board both made by ST Microelectronics. The microcontroller is based on an ARM Cortex-M4 processor. To build the source code and program the hardware STM32CubeIDE has been used. 
+This example uses BLE to control a led on the NUCLEO board and also retrieve a sensor value. We use of a NUCLEO-F446RE and a X-NUCLEO-IDB05A1 bluetooth evaluation board both made by ST Microelectronics. The microcontroller is based on an ARM Cortex-M4 processor. To build the source code and program the hardware STM32CubeIDE has been used. 
 
 The desktop program is a simple python script. From this script you can turn on/off the led on the NUCLEO board, and also retrieve a random value from an emulated sensor.
 
