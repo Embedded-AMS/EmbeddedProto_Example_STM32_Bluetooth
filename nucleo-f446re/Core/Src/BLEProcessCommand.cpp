@@ -76,24 +76,28 @@ void ble_receive_command(uint8_t *byte, uint8_t data_length) {
 //! The function which sends a serialized protobuf reply message.
 void ble_send_sensor(void)
 {
-	uint32_t message_len_index = write_buffer.get_size();
-	write_buffer.push(0); //placeholder for buffer length
+  // Clear the buffer to start clean
+  write_buffer.clear();
 
-	// Update the sensor value
-	uint32_t val = rand()%100;
-	sensor.set_light_sensor(val);
+  // A little hack, "use" the first byte so we can later place the length here.
+  write_buffer.push(0);
 
-	// Serialize the data.
-	auto serialization_status = sensor.serialize(write_buffer);
-	if(::EmbeddedProto::Error::NO_ERRORS == serialization_status)
-	{
-		write_buffer.get_data()[message_len_index] = write_buffer.get_size()-1;
-		Sensor_Update(write_buffer.get_data(), write_buffer.get_size());
-	}
+  // Generate some fake sensor data and set it in the message.
+  uint32_t val = rand() % 100;
+  sensor.set_light_sensor(val);
 
-	// Clear the buffers after we are done.
-	read_buffer.clear();
-	write_buffer.clear();
+  // Serialize the data.
+  const auto serialization_status = sensor.serialize(write_buffer);
+  if(::EmbeddedProto::Error::NO_ERRORS == serialization_status)
+  {
+    // Calculate the data length, compensating for the "used" byte.
+    const uint8_t n_bytes = write_buffer.get_size() - 1;
+    // And store the length in that first byte.
+    write_buffer.get_data()[0] = n_bytes;
+
+    // Next actually send the framed data over BLE.
+    Sensor_Update(write_buffer.get_data(), write_buffer.get_size());
+  }
 }
 
 //! The functions takes a command and responds to it.
