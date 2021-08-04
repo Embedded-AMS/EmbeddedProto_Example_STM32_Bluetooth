@@ -56,34 +56,28 @@ def print_control_keys():
 
 
 def process_cmd_input():
-    send_command = False
     get_sensor = False
     quit = False
-    msg = ble_messages_pb2.Command()
+    msg = None
 
+    # Obtain input from the keyboard.
     char = input("Next command: ")
+    
     if "y" == char:
+        msg = ble_messages_pb2.Command()
         msg.led = ble_messages_pb2.Command.On
-        send_command = True
     elif "n" == char:
+        msg = ble_messages_pb2.Command()
         msg.led = ble_messages_pb2.Command.Off
-        send_command = True
     elif "g" == char:
         get_sensor = True
     elif "Q" == char:
         # Stop the loop
         quit = True
-    else:
-        send_command = False
-        get_sensor = False      
+    else: 
         print_control_keys()
 
-    if send_command:
-        return None, msg, quit
-    elif get_sensor:
-        return True, None, quit
-    else:
-        return None, None, quit
+    return get_sensor, msg, quit
 
 
 async def run(loop):    
