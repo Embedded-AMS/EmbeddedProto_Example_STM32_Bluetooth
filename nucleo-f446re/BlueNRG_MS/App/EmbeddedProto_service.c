@@ -106,34 +106,38 @@ tBleStatus Add_EmbeddedProto_Service(void)
   
   //Add EmbeddedProto Service
   COPY_EMBEDDEDPROTO_SERVICE_UUID(uuid);
-  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 7,
+  ret = aci_gatt_add_serv(UUID_TYPE_128, uuid, PRIMARY_SERVICE, 7,
                           &EmbeddedProtoServHandle);
-  if (ret != BLE_STATUS_SUCCESS) goto fail;    
+  if(ret == BLE_STATUS_SUCCESS) {
+    //Add Command Characteristic
+    COPY_COMMAND_UUID(uuid);
+    ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
+                             CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
+                             ATTR_PERMISSION_NONE,
+                             GATT_NOTIFY_ATTRIBUTE_WRITE,
+                             16, 0, &CommandCharHandle);
+  }
+
+  if(ret == BLE_STATUS_SUCCESS) {
+    //Add Sensor Characteristic
+    COPY_SENSOR_UUID(uuid);
+    ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
+                             CHAR_PROP_NOTIFY | CHAR_PROP_READ,
+                             ATTR_PERMISSION_NONE,
+                             GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
+                             16, 0, &SensorCharHandle);
+  }
   
-  //Add Command Characteristic
-  COPY_COMMAND_UUID(uuid);
-  ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
-		  	  	  	  	   CHAR_PROP_WRITE|CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE,
-						   GATT_NOTIFY_ATTRIBUTE_WRITE ,
-                           16, 0, &CommandCharHandle);
-  if (ret != BLE_STATUS_SUCCESS) goto fail;
-  
-  //Add Sensor Characteristic
-  COPY_SENSOR_UUID(uuid);
-  ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
-                           CHAR_PROP_NOTIFY|CHAR_PROP_READ,
-                           ATTR_PERMISSION_NONE,
-                           GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
-                           16, 0, &SensorCharHandle);
-  if (ret != BLE_STATUS_SUCCESS) goto fail;
-  
-  PRINTF("Service EmbeddedProto added. Handle 0x%04X, Command Charac handle: 0x%04X, Sensor Charac handle: 0x%04X\n",EmbeddedProtoServHandle, CommandCharHandle, SensorCharHandle);
-  return BLE_STATUS_SUCCESS; 
-  
-fail:
-  PRINTF("Error while adding EmbeddedProto service.\n");
-  return BLE_STATUS_ERROR ;
-    
+  if(ret == BLE_STATUS_SUCCESS) {
+    PRINTF("Service EmbeddedProto added. Handle 0x%04X, Command Charac handle: 0x%04X, "
+            "Sensor Charac handle: 0x%04X\n",
+            EmbeddedProtoServHandle, CommandCharHandle, SensorCharHandle);
+  }
+  else {
+    PRINTF("Error while adding EmbeddedProto service.\n");
+  }
+
+  return (ret == BLE_STATUS_SUCCESS) ? BLE_STATUS_SUCCESS : BLE_STATUS_ERROR;
 }
 
 /**
