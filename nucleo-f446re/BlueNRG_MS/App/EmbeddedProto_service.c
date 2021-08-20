@@ -106,14 +106,15 @@ tBleStatus Add_EmbeddedProto_Service(void)
   
   //Add EmbeddedProto Service
   COPY_EMBEDDEDPROTO_SERVICE_UUID(uuid);
-  ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 7,
+  ret = aci_gatt_add_serv(UUID_TYPE_128, uuid, PRIMARY_SERVICE, 7,
                           &EmbeddedProtoServHandle);
   if(ret == BLE_STATUS_SUCCESS) {
     //Add Command Characteristic
     COPY_COMMAND_UUID(uuid);
     ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
-                         CHAR_PROP_WRITE|CHAR_PROP_WRITE_WITHOUT_RESP, ATTR_PERMISSION_NONE,
-                 GATT_NOTIFY_ATTRIBUTE_WRITE ,
+                             CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
+                             ATTR_PERMISSION_NONE,
+                             GATT_NOTIFY_ATTRIBUTE_WRITE,
                              16, 0, &CommandCharHandle);
   }
 
@@ -121,7 +122,7 @@ tBleStatus Add_EmbeddedProto_Service(void)
     //Add Sensor Characteristic
     COPY_SENSOR_UUID(uuid);
     ret =  aci_gatt_add_char(EmbeddedProtoServHandle, UUID_TYPE_128, uuid, 20,
-                             CHAR_PROP_NOTIFY|CHAR_PROP_READ,
+                             CHAR_PROP_NOTIFY | CHAR_PROP_READ,
                              ATTR_PERMISSION_NONE,
                              GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
                              16, 0, &SensorCharHandle);
