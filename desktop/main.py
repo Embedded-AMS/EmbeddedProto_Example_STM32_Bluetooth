@@ -29,9 +29,7 @@
 #
 
 
-###############################################
-# FILL IN THE SENSOR ADDRESS OF YOUR BLE CHIP #
-###############################################
+# The sensor address defined in the embedded code.
 address = "02:80:E1:00:34:12"
 
 # The id's characteristics defined in the GATT service
@@ -85,6 +83,7 @@ async def run(loop):
     while True:
     
         try:
+			print("trying to connect to: " + address)
             async with BleakClient(address, loop=loop) as client:
                 connect_attempts=0
                 print_control_keys()
