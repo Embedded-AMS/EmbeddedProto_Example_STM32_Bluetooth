@@ -83,7 +83,7 @@ async def run(loop):
     while True:
     
         try:
-			print("trying to connect to: " + address)
+            print("trying to connect to: " + address)
             async with BleakClient(address, loop=loop) as client:
                 connect_attempts=0
                 print_control_keys()
