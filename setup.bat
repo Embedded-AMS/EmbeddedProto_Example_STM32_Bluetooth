@@ -32,14 +32,14 @@
 
 :: Setup the submodule embedded proto
 cd EmbeddedProto
-./setup.bat
+call setup.bat
 cd ..
 
-:: Setup the virtual envirounment for the desktop Python script.
+:: Setup the virtual environment for the desktop Python script.
 cd desktop
 python -m venv venv
-.\venv\Scripts\activate & pip install -r requirements.txt
+call .\venv\Scripts\activate.bat & pip install -r requirements.txt & call .\venv\Scripts\deactivate.bat
 cd ..
 
 :: Generate the source code based on the *.proto files.
-./generate_source_files.bat
+call generate_source_files.bat
