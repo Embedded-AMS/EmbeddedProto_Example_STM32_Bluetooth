@@ -57,7 +57,7 @@ void ble_receive_command(uint8_t *byte, uint8_t data_length) {
 
   // The data received is framed. The first byte represents the
   // number of bytes in the protobuf message. Lets obtain this length.
-  uint8_t n_bytes = byte[0] + 1;
+  uint8_t n_bytes = byte[0];
 
   if(n_bytes < data_length){
 
