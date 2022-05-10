@@ -60,14 +60,25 @@ bool BLEReadBuffer::peek(uint8_t& byte) const
   return return_value;
 }
 
-void BLEReadBuffer::advance()
+bool BLEReadBuffer::advance()
 {
-  ++read_index_;
+  const bool return_value = write_index_ > read_index_;
+  if(return_value)
+  {
+    ++read_index_;
+  }
+  return return_value;
 }
 
-void BLEReadBuffer::advance(const uint32_t N)
+bool BLEReadBuffer::advance(const uint32_t N)
 {
-  read_index_ += N;
+  const uint32_t new_read_index = read_index_ + N;
+  const bool return_value = write_index_ > new_read_index;
+  if(return_value)
+  {
+    read_index_ = new_read_index;
+  }
+  return return_value;
 }
 
 bool BLEReadBuffer::pop(uint8_t& byte)
