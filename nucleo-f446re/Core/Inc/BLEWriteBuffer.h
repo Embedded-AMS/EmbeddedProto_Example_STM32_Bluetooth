@@ -1,10 +1,10 @@
 /*
- *  Copyright (C) 2020 Embedded AMS B.V. - All Rights Reserved
+ *  Copyright (C) 2020-2024 Embedded AMS B.V. - All Rights Reserved
  *
  *  This file is part of Embedded Proto.
  *
  *  Embedded Proto is open source software: you can redistribute it and/or
- *  modify it under the terms of the GNU General Public License as published
+ *  modify it under the term of the GNU General Public License as published
  *  by the Free Software Foundation, version 3 of the license.
  *
  *  Embedded Proto  is distributed in the hope that it will be useful,
@@ -23,8 +23,8 @@
  *    info at EmbeddedProto dot com
  *
  *  Postal adress:
- *    Johan Huizingalaan 763a
- *    1066 VH, Amsterdam
+ *    Atoomweg 2
+ *    1627 LE, Hoorn
  *    the Netherlands
  */
 

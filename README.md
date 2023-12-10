@@ -1,8 +1,8 @@
 
-![alt text](https://embeddedproto.com/wp-content/uploads/2020/03/Embedded-Proto-e1583834233386.png "Embedded Proto Logo")
+![alt text](https://embeddedproto.com/wp-content/uploads/2022/04/Embedded_Proto.png "Embedded Proto Logo")
 
 
-Copyrights 2020 Embedded AMS B.V. Amsterdam, [www.EmbeddedAMS.nl](https://www.EmbeddedAMS.nl), [info@EmbeddedAMS.nl](mailto:info@EmbeddedAMS.nl)
+Copyrights 2020-2024 Embedded AMS B.V. Amsterdam, [www.EmbeddedAMS.nl](https://www.EmbeddedAMS.nl), [info@EmbeddedAMS.nl](mailto:info@EmbeddedAMS.nl)
 
 
 Looking for a more elaborate description of this example? Please visit: https://embeddedproto.com/ble-example-with-embedded-proto/
@@ -22,17 +22,18 @@ The desktop program is a simple python script. From this script you can turn on/
 # Installation
 
 1. Install STM32CubeIDE if you have not already.
-2. Install the dependencies required by Embedded Proto. They are listed [here](https://github.com/Embedded-AMS/EmbeddedProto).
+2. Install the dependencies required by Embedded Proto. They are listed [here](https://github.com/Embedded-AMS/EmbeddedProto), please match the version used in this example.
 3. Checkout this example repository including the submodule of Embedded Proto: `git clone --recursive https://github.com/Embedded-AMS/EmbeddedProto_Example_STM32_BLE.git`.
-4. On Linux make sure the setup.sh and generate_source_files.sh are executable. `chmod +x setup.sh` and `chmod +x generate_source_files.sh`
-5. Setup the environment required for Embedded Proto and the desktop script by running the setup script: `./setup.sh` on Linux or `setup.bat` on Windows.
+4. Setup the environment required for Embedded Proto and the desktop script by running the setup script: `python ./setup.py`.
 
 The setup script already does it for you but you can regenerate the source code using the `./generate_source_files.sh` or `generate_source_files.bat` script. This is required when you have changed the \*.proto file.
 
 
 # Running the code
 
-First connect the BLE X-NUCLEO-IDB05A1 to the NUCLEO. Then connect the NUCLEO via the usb programmer and use STM32CubeIDE to build and program the microcontroller on it. Next go to the desktop folder, activate the virtual environment and run the script. 
+First connect the BLE X-NUCLEO-IDB05A1 to the NUCLEO. Then connect the NUCLEO via the usb programmer and use STM32CubeIDE to build and program the microcontroller on it. 
+
+Next go to the desktop folder, activate the virtual environment and run the script. 
 
 On Linux:
 ```bash
