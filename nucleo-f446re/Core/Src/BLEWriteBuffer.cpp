@@ -63,13 +63,13 @@ bool BLEWriteBuffer::push(const uint8_t byte)
   return return_value;
 }
 
-bool BLEWriteBuffer::push(const uint8_t* bytes, const uint32_t length)
+bool BLEWriteBuffer::push(const ::EmbeddedProto::const_bytes_view& bytes)
 {
-  bool return_value = MAX_SIZE > (write_index_ + length);
+  bool return_value = MAX_SIZE >= (write_index_ + bytes.size);
   if(return_value)
   {
-    memcpy(data_ + write_index_, bytes, length);
-    write_index_ += length;
+    memcpy(data_ + write_index_, bytes.data, bytes.size);
+    write_index_ += bytes.size;
   }
   return return_value;
 }

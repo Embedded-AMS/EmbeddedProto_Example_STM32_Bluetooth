@@ -1,5 +1,5 @@
 ::
-:: Copyright (C) 2020-2024 Embedded AMS B.V. - All Rights Reserved
+:: Copyright (C) 2020-2026 Embedded AMS B.V. - All Rights Reserved
 ::
 :: This file is part of Embedded Proto.
 ::
@@ -30,11 +30,8 @@
 
 :: Generate the embedded source code.
 mkdir .\nucleo-f446re\generated
-
-cd EmbeddedProto
-protoc --plugin=protoc-gen-eams=protoc-gen-eams.bat -I..\proto --eams_out=..\nucleo-f446re\generated ..\proto\ble_messages.proto
-cd ..
-
-:: Generate the desktop source code.
 mkdir .\desktop\generated
-protoc -I.\proto --python_out=.\desktop\generated .\proto\ble_messages.proto
+
+REM The embeddedproto command lives in the virtual environment of the submodule. It runs the protobuf compiler which
+REM came with the package, so it generates the Python code for the desktop script as well.
+.\EmbeddedProto\venv\Scripts\embeddedproto.exe -I.\proto --eams_out=.\nucleo-f446re\generated --python_out=.\desktop\generated .\proto\ble_messages.proto
