@@ -32,7 +32,7 @@
 #define INC_BLETREADBUFFER_H_
 
 #include <cstdint>
-#include <ReadBufferInterface.h>
+#include <EmbeddedProto/ReadBufferInterface.h>
 
 
 class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
@@ -42,7 +42,7 @@ class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
 
   public:
     BLEReadBuffer();
-    ~BLEReadBuffer() override = default;
+    ~BLEReadBuffer() = default;
 
     /** \see ::EmbeddedProto::ReadBufferInterface::get_size() */
     uint32_t get_size() const override;
@@ -50,8 +50,11 @@ class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
     /** \see ::EmbeddedProto::ReadBufferInterface::get_max_size() */
     uint32_t get_max_size() const override;
 
-    /** \see ::EmbeddedProto::ReadBufferInterface::peak() */
+    /** \see ::EmbeddedProto::ReadBufferInterface::peek() */
     bool peek(uint8_t& byte) const override;
+
+    /** \see ::EmbeddedProto::ReadBufferInterface::peek(const uint32_t n_bytes, uint8_t& byte) */
+    bool peek(const uint32_t n_bytes, uint8_t& byte) const override;
 
     /** \see ::EmbeddedProto::ReadBufferInterface::advance() */
     bool advance() override;
@@ -82,7 +85,7 @@ class BLEReadBuffer : public ::EmbeddedProto::ReadBufferInterface
      * \param length The number of bytes in the source array.
      * \return True when all data from the data pointer was copied. False if the copy was limited.
      */
-    bool set(const uint8_t* data, const uint32_t length);
+    bool set(const ::EmbeddedProto::const_bytes_view& data);
 
 
   private:

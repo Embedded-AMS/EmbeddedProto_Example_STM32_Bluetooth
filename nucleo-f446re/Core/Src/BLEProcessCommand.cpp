@@ -33,7 +33,7 @@
 #include "ble_messages.h"
 #include "BLEReadBuffer.h"
 #include "BLEWriteBuffer.h"
-#include <Errors.h>
+#include <EmbeddedProto/Errors.h>
 
 #include "bluenrg_def.h"
 
@@ -62,7 +62,7 @@ void ble_receive_command(uint8_t *byte, uint8_t data_length) {
   if(n_bytes < data_length){
 
     // Copy the data except the length to the deserialization buffer.
-    read_buffer.set(byte + 1, n_bytes);
+    read_buffer.set(::EmbeddedProto::const_bytes_view{byte + 1, n_bytes});
 
     // Deserialize the data received.
 		auto deserialize_status = received_command.deserialize(read_buffer);

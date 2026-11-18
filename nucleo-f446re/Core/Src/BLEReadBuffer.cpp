@@ -60,6 +60,16 @@ bool BLEReadBuffer::peek(uint8_t& byte) const
   return return_value;
 }
 
+bool BLEReadBuffer::peek(const uint32_t n_bytes, uint8_t& byte) const
+{
+  const bool return_value = write_index_ > (read_index_ + n_bytes);
+  if(return_value)
+  {
+    byte = data_[read_index_ + n_bytes];
+  }
+  return return_value;
+}
+
 bool BLEReadBuffer::advance()
 {
   const bool return_value = write_index_ > read_index_;
@@ -119,12 +129,12 @@ bool BLEReadBuffer::push(uint8_t& byte)
   return return_value;
 }
 
-bool BLEReadBuffer::set(const uint8_t* data, const uint32_t length)
+bool BLEReadBuffer::set(const ::EmbeddedProto::const_bytes_view& data)
 {
-  const bool return_value = get_max_size() >= length;
-  const uint32_t copy_n_bytes = std::min(length, get_max_size());
+  const bool return_value = get_max_size() >= data.size;
+  const uint32_t copy_n_bytes = std::min(data.size, get_max_size());
   clear();
-  memcpy(data_, data, copy_n_bytes);
+  memcpy(data_, data.data, copy_n_bytes);
   write_index_ = copy_n_bytes;
   return return_value;
 }
